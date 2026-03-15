@@ -4,7 +4,9 @@ const User = require("../models/User");
 
 // Crear token
 const createToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
 };
 
 // Crear REGISTRO del usuario
@@ -14,7 +16,7 @@ const register = async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: "Email ya registrado" });
+      return res.status(400).json({ error: "Email ya registrado" });
     }
     // aquí es donde se hashea la clave antes de guardarla en la base de datos,
     // utilizando bcrypt y el número de rondas definido en las variables de entorno.
@@ -37,10 +39,7 @@ const register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("❌ Error completo:", error); // Ver en consola del servidor
-    res
-      .status(500)
-      .json({ message: "Error en registro", error: error.message });
+    return res.status(500).json({ error: "Error de servidor" });
   }
 };
 
@@ -51,12 +50,12 @@ const login = async (req, res) => {
 
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      return res.status(400).json({ message: "Credenciales invalidas" });
+      return res.status(400).json({ error: "Credenciales invalidas" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Credenciales invalidas" });
+      return res.status(400).json({ error: "Credenciales invalidas" });
     }
 
     const token = createToken(user._id);
@@ -71,7 +70,7 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("❌ Error completo:", error); // Ver en consola del servidor
+    return res.status(500).json({ error: "Error de servidor" });
   }
 };
 

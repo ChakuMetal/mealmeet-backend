@@ -47,3 +47,17 @@ Recetas, pruebas con postman:
 - Eliminar una receta realizado (200): (OK) (DELETE)
 
 Subida a GITHUB de ficheros
+
+- Realizado primer commit de archivos
+- Creado repositorio de Backend en GitHub: https://github.com/ChakuMetal/mealmeet-backend
+
+RENDER:
+
+- .env.example creado con variables de entorno
+- Función CORS añadida al server.js
+- Deploy en Render URL DE RENDER: https://mealmeet-backend.onrender.com
+- Servidor funcionando.
+
+- URL pública del backend: https://mealmeet-backend.onrender.com
+- Fecha de despliegue: 13/03/2026
+- Nota de Render Free: primera petición puede tardar por spin-down.
