@@ -60,23 +60,6 @@ const login = async (req, res) => {
 
     const token = createToken(user._id);
 
-    const forgotPassword = async (req, res) => {
-      try {
-        const { email } = req.body;
-
-        if (!email) {
-          return res.status(400).json({ error: "Email requerido" });
-        }
-
-        return res.status(200).json({
-          message:
-            "Si el correo existe, enviaremos instrucciones para restablecer la contraseña",
-        });
-      } catch (error) {
-        return res.status(500).json({ error: "Error de servidor" });
-      }
-    };
-
     res.status(200).json({
       message: "Login correcto",
       token,
@@ -85,6 +68,24 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
       },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Error de servidor" });
+  }
+};
+
+//RECORDAR LA CONTRASEÑA
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: "Email requerido" });
+    }
+
+    return res.status(200).json({
+      message:
+        "Si el correo existe, enviaremos instrucciones para restablecer la contraseña",
     });
   } catch (error) {
     return res.status(500).json({ error: "Error de servidor" });
