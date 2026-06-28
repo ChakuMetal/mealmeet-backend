@@ -1,4 +1,5 @@
 const Recipe = require("../models/Recipe");
+const User = require("../models/User");
 
 // CRUD
 
@@ -108,10 +109,32 @@ const deleteRecipe = async (req, res) => {
   }
 };
 
+const likeRecipe = async (req, res) => {
+  try {
+    const recipeId = req.params.id;
+
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Receta no encontrada" });
+    }
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $addToSet: { likedRecipes: recipeId },
+    });
+
+    return res.status(200).json({ message: "Receta añadida a me gusta" });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "Error al guardar me gusta", error: err.message });
+  }
+};
+
 module.exports = {
   createRecipe,
   getAllRecipes,
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  likeRecipe,
 };

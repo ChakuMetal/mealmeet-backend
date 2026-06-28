@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    likedRecipes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+    ],
   },
   { timestamps: true },
 );
